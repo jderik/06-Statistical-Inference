@@ -1,24 +1,21 @@
 ---
-title: "StatInfCourseProj"
-author: "JD"
+title: 'Statistical Inference Course Project 1- Simulations'
+author: "Joel DSilva"
 date: "Tuesday, May 19, 2015"
-output: html_document
+output: pdf_document
 ---
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
-
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
-### Statistical Inference Course Project : Part 1 / Simulations
-#### by Joel
 ##### Overview
 The objective 
- Investigate the exponential distribution in R and compare it with the Central Limit Theorem. The exponential distribution can be simulated in R with rexp(n, lambda) where lambda is the rate parameter. The mean of exponential distribution is 1/lambda and the standard deviation is also 1/lambda. 
+ Investigate the exponential distribution in R and compare it with the Central Limit Theorem. The exponential distribution can be simulated in R with rexp(n, lambda) where lambda is the rate parameter. This will compare the sample and theoretical means, std deviation and variance. It will also show the distribution to be Normal.
  
- To illustrate via simulation and associated explanatory text the properties of the distribution of the mean of 40 exponentials. 
-1. Show the sample mean and compare it to the theoretical mean of the distribution.
-2. Show how variable the sample is (via variance) and compare it to the theoretical variance of the distribution.
-3. Show that the distribution is approximately normal.
+```{r echo=FALSE}
+library(ggplot2)
+```
 
+_**Set the variables. Setting a seed value so the output can be regenerated.**_
+
+_**Structure of the generated random sample set is as below**_
 ```{r}
 
 lambda <- 0.2
@@ -29,7 +26,11 @@ generate_random <- replicate(n, rexp(samples, rate=lambda))
 
 # Print structure of the simulation
 str(generate_random)
+```
 
+
+_**Now we calculate the means, standard deviance and variance**_
+```{r}
 #calculate  means of the exponential samples
 exp_means<- apply(generate_random,2,mean)
 
@@ -41,7 +42,7 @@ exp_var<- exp_sd ^ 2
 ```
 
 #### 1. Show the sample mean and compare it to the theoretical mean of the distribution.
-Sample mean and Theoretical Mean is printed below respectively
+_**Sample mean and Theoretical Mean is printed below respectively**_
 ```{r}
 mean(exp_means)
 
@@ -51,11 +52,20 @@ mean(exp_means)
 
 #####The sample mean comes to around 4.9 and the theoretical is at 5. These values indicate that the sample and theoretical mean are very close to each other. For infinite observations the sample and theory should match.
 
+_**In figures the sample mean vs theoretical looks likebelow. The left vertical is the sample mean and the right vertical line is the theoretical mean.**_
 
+```{r}
+
+
+hist(exp_means,main="Comparision of sample vs theoretical means")
+abline(v=mean(exp_means))
+abline(v=1/lambda)
+
+```
 
 #### 2.Show how variable the sample is (via variance) and compare it to the theoretical variance of the distribution.
 
-Sample deviation  and Theoretical std deviation are printed below respectively
+_**Sample deviation  and Theoretical std deviation are printed below respectively**_
 ```{r}
 exp_sd
 
@@ -64,7 +74,7 @@ exp_sd
 ```
 
 
-Sample variance  and Theoretical variance are printed below respectively
+_**Sample variance  and Theoretical variance are printed below respectively**_
 ```{r}
 exp_var
 
@@ -72,20 +82,20 @@ exp_var
 ```
 
 ##### The standard deviation of the samples turns out to be 0.81. THe theoretical standard deviation has turned out to be 0.79. 
-
-
 ##### The sample variance has turned out to be 0.66 and theoretical variance is 0.62. 
 
+_**This shows that the SD and Var are very close indicating a sufficient sample would provide the same values.**_
 
 #### 3.Show that the distribution is approximately normal.
-```{r}
-
+```{r, echo=FALSE, fig.align='left'}
+qqnorm(exp_means)
+qqline(exp_means)
 
 
 ```
 
 
-
+_**As per this the sample and theoretical points are aligned closedly. So a sufficiently large number of samples would indicate that the data would overlap and meet the premise of the CLT -> that the distribution would become  a normal distribtion.**_
 
 
 
