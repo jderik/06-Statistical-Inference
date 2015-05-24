@@ -1,0 +1,97 @@
+---
+title: "Statistical Inference Project 2"
+author: "JD"
+date: "Saturday, May 23, 2015"
+graphics: yes
+output: pdf_document 
+---
+#### Overview
+The objective 
+To analyze the ToothGrowth data in the R datasets package ToothGrowth. This has observations for 60 samples (Animals). These animals were divided into 6 groups of 10 and consistently fed a diet with one of 6 Vitamin C supplement regimes for a period of 42 days. The Vitamin C was administered either in the form of Orange Juice (OJ) or chemically pure Vitamin C in aqueous solution (VC). Each animal received the same daily dosage of Vitamin C (either 0.5, 1.0 or 2.0 milligrams) consistently.  
+
+```{r global_options , echo=FALSE, fig.align='left'}
+
+```
+
+#### 1. Load the ToothGrowth data 
+```{r}
+library(ggplot2)
+library(datasets)
+data(ToothGrowth)
+
+## This function returns the title for facet grids (Ref http://www.cookbook-r.com/Graphs/Facets_(ggplot2)/)
+mf_labeller <- function(var, value){
+  value <- as.character(value)
+  if (var=="supp") { 
+    value[value=="OJ"] <- "Orange Juice"
+    value[value=="VC"]   <- "Vit C Aqeuous Soln"
+  }
+  return(value)
+}
+```
+_**Displaying Tooth Growth Datasets basics**_
+
+#### 2. Summary and Structure
+
+**A. Summary**
+```{r}
+summary(ToothGrowth)
+```
+
+**B. Basic Structure**
+```{r}
+str(ToothGrowth)
+```
+
+#### 3. Displaying Tooth Growth Plot and basic analysis
+
+```{r, fig.align='left'}
+
+ggplot(data=ToothGrowth, aes(dose, len)) +geom_bar(stat="identity") + facet_grid(.~supp, drop=FALSE,labeller=mf_labeller) + xlab("DOSE") + ylab("Tooth Length")+
+  ggtitle("Plot of Tooth Length vs Dosage of the two Supplements ")
+
+```
+
+
+
+#### 4. Initial Inference
+
+_The initial analysis shows a direct relationship between the dosage and tooth growths. At lower dosages (0.5 and 1.0) OJ seemed to provide better tooth growth then with Vit C supplements. OJ provides a 50 micron growth over the Vit C supplement._ 
+_At a dosage of 2.0 units though both supplements provide a comparable level of tooth growth._
+
+
+#### 5. Detailed Analysis
+
+**Here we attain p values to evaluate null hypothesis.**
+
+**A. Load Datasets for dosage levels**
+```{r}
+## Load data sets for the three dosage levels
+dosage01 <- subset(ToothGrowth, dose==0.5)
+dosage02 <- subset(ToothGrowth, dose==1.0)
+dosage03 <- subset(ToothGrowth, dose==2.0)
+
+```
+
+**B. Perform T Test on the three sets of data. P Values printed below**
+```{r}
+t<-t.test(len~supp, paired=FALSE, data=dosage01)
+t$p.value
+t<-t.test(len~supp, paired=FALSE, data=dosage02)
+t$p.value
+t<-t.test(len~supp, paired=FALSE, data=dosage03)
+t$p.value
+```
+
+#### 6. Analysis
+
+_Dosage of 0.5 and 1.0 have p values of 0.0063 and 0.0010 respectively. Dosage of 2.0 has p value of 0.9638._
+_Orange Juice and Vit C has greater impact on tooth growth at lower levels. At higher dosages the differences caused by the two supplements have no differences to tooth growth._
+
+
+
+#### 7. References
+
+[Refer This Link for details on P Value ( http://www.dummies.com/how-to/content/what-a-pvalue-tells-you-about-statistical-data.html)
+
+
