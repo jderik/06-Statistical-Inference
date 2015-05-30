@@ -82,24 +82,55 @@ Suppose that 18 obese subjects were randomized, 9 each, to a new diet pill and a
 
 Nx<-9 #dietpill
 Ny<-9 #placebo
+sdx<-1.5 #dietpill grp
+sdy<-1.8 # Placebo grp
+mux<- -3
+muy<- 1
+sd_pooled<- (((Nx-1)* (sdx^2)) + ((Ny-1)* (sdy^2)))/ (Nx+Ny-2)
+meandiff<- mux-muy
+se<- sqrt((1/Nx) + (1/Ny))*sd_pooled
+
+pvalue<-  pt(meandiff/se, Nx+Ny-1)
+#####Ans : [1] 0.003314327
 
 
 
+####6.Question 6 : 
+Brain volumes for 9 men yielded a 90% confidence interval of 1,077 cc to 1,123 cc. Would you reject in a two sided 5% hypothesis test of H0:μ=1,078?
+
+H0:μ=1,078 i sin range 1077 to 1123
 
 
-#####Ans :
+#####Ans : No
 
 
+####7.Question 7 : 
+Researchers would like to conduct a study of 100 healthy adults to detect a four year mean brain volume loss of .01 mm3. Assume that the standard deviation of four year volume loss in this population is .04 mm3. About what would be the power of the study for a 5% one sided test versus a null hypothesis of no volume loss?
+
+n<-100
+
+sd<-0.04
+
+mu<-0.01
+
+power.t.test(n=n, delta=mu, sd=sd , sig.level=0.05, type="one.sample", alt="one.sided")$power
 
 
+#####Ans : 0.7989855 ~ 0.8
 
 
+####8.Question 8 : 
+Researchers would like to conduct a study of n healthy adults to detect a four year mean brain volume loss of .01 mm3. Assume that the standard deviation of four year volume loss in this population is .04 mm3. About what would be the value of n needded for 90% power of type one error rate of 5% one sided test versus a null hypothesis of no volume loss?
 
 
+sd<-0.04
+
+mu<-0.01
+
+power.t.test(power=0.9, delta=mu, sd=sd , sig.level=0.05, type="one.sample", alt="one.sided")$n
 
 
-
-
+#####Ans : 138.3856 ~ 140
 
 
 
